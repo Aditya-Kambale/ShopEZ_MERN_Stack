@@ -1,167 +1,154 @@
-# ShopEZ
+# ShopEZ – MERN Stack E-Commerce Platform
 
-ShopEZ is a full-featured e-commerce web application built with the MERN stack (MongoDB, Express.js, React, Node.js). It provides a seamless shopping experience for users and a powerful seller dashboard for admins to manage products, track orders, and analyze sales.
+**Author:** Aditya Kambale ([@Aditya-Kambale](https://github.com/Aditya-Kambale))
 
-## Features
+ShopEZ is a full-stack online shopping application built on the MERN stack (MongoDB, Express.js, React, Node.js). Customers can browse and buy products; sellers/admins get a separate dashboard to run the catalogue, process orders and watch sales numbers.
 
-### For Users
-- **User Authentication** – Register, login, and manage your profile with JWT-based secure authentication
-- **Product Catalog** – Browse products with search, category filtering, and price sorting
-- **Product Details** – View detailed product information including images, descriptions, ratings, discounts, and stock availability
-- **Shopping Cart** – Add products, update quantities, and remove items with real-time price calculations
-- **Secure Checkout** – Enter shipping address and payment method to place orders
-- **Order Tracking** – View order history and track order status (Processing, Shipped, Delivered, Cancelled)
-- **User Profile** – Manage personal information and view all past orders
+> **Acknowledgement:** This project is based on the open-source ShopEZ project by [Ruturaj Misal](https://github.com/ruturaj1804/-ShopEZ), released under the MIT License. The original copyright and license notice are retained in `LICENSE`. Documentation in this repository was written separately for this version.
 
-### For Admins / Sellers
-- **Seller Dashboard** – Centralized hub to manage products and monitor sales
-- **Add Products** – Upload product images directly, set prices, discounts, stock, and categories
-- **Inline Editing** – Quickly update product prices and stock levels without leaving the page
-- **Low Stock Alerts** – Automatic warnings when products fall below 10 units
-- **Order Management** – View all customer orders and update order statuses
-- **Revenue Analytics** – Track total revenue, orders, products, and user count
-- **User Management** – View and manage registered users
+## Table of Contents
+1. [Highlights](#highlights)
+2. [Tech Stack](#tech-stack)
+3. [How It Works](#how-it-works)
+4. [Folder Layout](#folder-layout)
+5. [Quick Start](#quick-start)
+6. [Environment Variables](#environment-variables)
+7. [API Overview](#api-overview)
+8. [Application Routes](#application-routes)
+9. [More Documentation](#more-documentation)
+10. [License](#license)
+
+## Highlights
+
+**Shoppers**
+- Sign up, log in and edit a profile, secured with JSON Web Tokens
+- Search products, filter by category and sort by price
+- Product pages with images, description, rating, discount and stock status
+- Cart with live totals, quantity changes and item removal
+- Checkout with shipping address and payment method
+- Order history with status (Processing, Shipped, Delivered, Cancelled)
+
+**Sellers / Admins**
+- Dashboard with totals for revenue, orders, products and users
+- Create products with image upload, pricing, discount, category and stock
+- Edit price and stock in place from the product list
+- Automatic low-stock warning when quantity drops under 10
+- View every order and change its status
+- View registered users
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
+| Area | Tools |
+|------|-------|
 | Frontend | React 18, Vite, React Router, Axios, React Icons, React Toastify |
 | Backend | Node.js, Express.js |
-| Database | MongoDB with Mongoose ODM |
-| Authentication | JWT (JSON Web Tokens), bcryptjs |
-| File Upload | Multer |
-| Architecture | MVC (Model-View-Controller) |
+| Database | MongoDB, Mongoose |
+| Auth & security | JWT, bcryptjs |
+| Uploads | Multer |
+| Pattern | MVC on the server |
+| Hosting | Vercel (see `vercel.json`) |
 
-## Project Structure
+## How It Works
+
+The React client talks to the Express API over HTTP using Axios. The API checks the JWT on protected routes, runs the logic in controllers, and reads or writes MongoDB through Mongoose models. Product images are stored in the server's `uploads` folder and served as static files. React Context holds login state and cart state so every page stays in sync.
 
 ```
-E-commerce Application/
-├── Client/                 # React frontend (Vite)
-│   ├── src/
-│   │   ├── components/     # Navbar, Footer, ProductCard
-│   │   ├── context/        # AuthContext, CartContext
-│   │   ├── pages/          # Landing, Products, Cart, Profile, Login, Register
-│   │   │   └── admin/      # AdminDashboard, SellerDashboard, AllOrders, AllProducts, NewProduct
-│   │   └── services/       # API client, utility functions
-│   └── package.json
-├── Server/                 # Express backend
-│   ├── config/             # Database connection
-│   ├── controllers/        # Business logic (user, product, cart, order, admin)
-│   ├── middleware/         # Auth (JWT), file upload (Multer)
-│   ├── models/             # Mongoose schemas (User, Product, Cart, Order, Admin)
-│   ├── routes/             # API route definitions
-│   ├── uploads/            # Uploaded product images
-│   ├── index.js            # Server entry point
-│   ├── seed.js             # Database seeder script
-│   └── package.json
-└── .gitignore
+Browser (React + Vite)  <-->  Express API  <-->  MongoDB
+        |                        |
+   Auth/Cart context      JWT middleware, Multer
 ```
 
-## Getting Started
+## Folder Layout
 
-### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (running on `localhost:27017` or provide a remote URI)
-- npm or yarn
+```
+ShopEZ/
+├── Client/                  React app
+│   └── src/
+│       ├── components/      Navbar, Footer, ProductCard
+│       ├── context/         Auth and cart state
+│       ├── pages/           Shopper pages
+│       │   └── admin/       Seller and admin pages
+│       └── services/        API client and helpers
+├── Server/                  Express API
+│   ├── config/              Database connection
+│   ├── controllers/         Request handling and business rules
+│   ├── middleware/          JWT check, file upload
+│   ├── models/              Mongoose schemas
+│   ├── routes/              Route definitions
+│   ├── uploads/             Product images
+│   ├── index.js             Entry point
+│   └── seed.js              Sample data loader
+├── Documentation/           Project report
+├── Phase Wise/              Development phases
+├── package.json
+└── vercel.json
+```
 
-### Installation
+## Quick Start
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/ruturaj1804/-ShopEZ.git
-   cd "E-commerce Application"
-   ```
+**Requirements:** Node.js 16+, npm, and MongoDB (local or Atlas).
 
-2. **Set up the Backend**
-   ```bash
-   cd Server
-   npm install
-   ```
+```bash
+# 1. Clone
+git clone https://github.com/Aditya-Kambale/ShopEZ_MERN_Stack.git
+cd ShopEZ_MERN_Stack
 
-3. **Configure Environment Variables**
-   Create a `.env` file in the `Server` folder:
-   ```
-   MONGO_URI=mongodb://localhost:27017/shopez
-   JWT_SECRET=your_secret_key_here
-   PORT=8000
-   ```
+# 2. Backend
+cd Server
+npm install
+# create .env (see below), then load sample data
+node seed.js
+npm run dev        # http://localhost:8000
 
-4. **Seed the Database** (adds sample products & admin user)
-   ```bash
-   node seed.js
-   ```
+# 3. Frontend (new terminal)
+cd Client
+npm install
+npm run dev        # http://localhost:5173
+```
 
-5. **Set up the Frontend**
-   ```bash
-   cd ../Client
-   npm install
-   ```
+The seed script creates sample products and an admin account. Check `Server/seed.js` for the admin credentials and **change them before deploying anywhere public**.
 
-### Running the Application
+## Environment Variables
 
-1. **Start MongoDB** – Make sure MongoDB is running on your machine
+Create `Server/.env`:
 
-2. **Start the Backend Server**
-   ```bash
-   cd Server
-   npm run dev
-   ```
-   Server runs on `http://localhost:8000`
+```
+MONGO_URI=mongodb://localhost:27017/shopez
+JWT_SECRET=choose_a_long_random_string
+PORT=8000
+```
 
-3. **Start the Frontend** (in a new terminal)
-   ```bash
-   cd Client
-   npm run dev
-   ```
-   Frontend runs on `http://localhost:5173`
+Never commit `.env` files.
 
-### Default Admin Login
-- **Email:** `admin@shopez.com`
-- **Password:** `admin123`
+## API Overview
 
-## API Endpoints
+| Group | Base path | What it covers |
+|-------|-----------|----------------|
+| Users | `/api/users` | register, login, read/update own profile |
+| Products | `/api/products` | list (search, category, sort), view one, and admin-only create/update/delete |
+| Cart | `/api/cart` | view cart, add item, change quantity, remove item |
+| Orders | `/api/orders` | place order, own orders, admin: all orders and status updates |
+| Admin | `/api/admin` | dashboard statistics, user list, site settings |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/users/register` | Register new user |
-| POST | `/api/users/login` | Login user |
-| GET | `/api/users/profile` | Get user profile (protected) |
-| PUT | `/api/users/profile` | Update user profile (protected) |
-| GET | `/api/products` | Get all products (supports search, category, sort) |
-| GET | `/api/products/:id` | Get single product |
-| POST | `/api/products` | Create product (admin, multipart) |
-| PUT | `/api/products/:id` | Update product (admin) |
-| DELETE | `/api/products/:id` | Delete product (admin) |
-| GET | `/api/cart` | Get user cart (protected) |
-| POST | `/api/cart/add` | Add item to cart (protected) |
-| PUT | `/api/cart/:itemId` | Update cart item quantity (protected) |
-| DELETE | `/api/cart/:itemId` | Remove item from cart (protected) |
-| POST | `/api/orders` | Create order (protected) |
-| GET | `/api/orders/myorders` | Get user orders (protected) |
-| GET | `/api/orders/all` | Get all orders (admin) |
-| PUT | `/api/orders/:id/status` | Update order status (admin) |
-| GET | `/api/admin/dashboard` | Get dashboard stats (admin) |
-| GET | `/api/admin/users` | Get all users (admin) |
-| GET | `/api/admin/settings` | Get site settings |
+Routes marked protected need an `Authorization: Bearer <token>` header; admin routes also require an admin account.
 
-## Key Pages
+## Application Routes
 
-| Page | Route | Description |
-|------|-------|-------------|
-| Landing | `/` | Hero banner, categories, featured products |
-| Products | `/products` | All products with search, filter, sort |
-| Product Detail | `/products/:id` | Single product view with add to cart |
-| Cart | `/cart` | Shopping cart with checkout |
-| Profile | `/profile` | User info and order history |
-| Login | `/login` | User authentication |
-| Register | `/register` | New user registration |
-| Seller Dashboard | `/admin/sell` | Product management & sales overview |
-| Admin Dashboard | `/admin` | Stats, orders, users management |
-| All Orders | `/admin/orders` | View & manage all orders |
-| All Products | `/admin/products` | View & delete products |
-| New Product | `/admin/products/new` | Add new product |
+| Route | Page |
+|-------|------|
+| `/` | Home with banner, categories, featured items |
+| `/products`, `/products/:id` | Catalogue and product detail |
+| `/cart` | Cart and checkout |
+| `/profile` | Account details and orders |
+| `/login`, `/register` | Authentication |
+| `/admin` | Admin dashboard |
+| `/admin/sell` | Seller dashboard |
+| `/admin/orders` | Order management |
+| `/admin/products`, `/admin/products/new` | Product list and creation form |
+
+## More Documentation
+- [Project Documentation](Documentation/Project-Documentation.md)
+- [Phase-wise development](Phase%20Wise/)
 
 ## License
-
-This project is open source and available under the [MIT License](LICENSE).
+MIT. See `LICENSE`. The original work is copyright its respective author, Ruturaj Misal, and that notice must stay in the license file.
